@@ -1,9 +1,10 @@
-name: Update catalog from Excel
+name: Update catalog and photos
 
 on:
   push:
     paths:
       - "catalog.xlsx"
+      - "scripts/update_catalog.py"
       - "convert_catalog.py"
   workflow_dispatch:
 
@@ -11,8 +12,9 @@ permissions:
   contents: write
 
 jobs:
-  convert:
+  update:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,16 +24,19 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Excel reader
-        run: pip install pandas openpyxl
+      - name: Install dependencies
+        run: pip install openpyxl requests pandas
 
-      - name: Convert Excel
+      - name: Download photos from Yandex Disk
+        run: python scripts/update_catalog.py
+
+      - name: Convert Excel to catalog JSON
         run: python convert_catalog.py
 
-      - name: Save generated catalog
+      - name: Save updated catalog and photos
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add catalog.json js/catalog-data.js
-          git diff --cached --quiet || git commit -m "Update catalog from Excel"
+          git add catalog.json catalog.xlsx assets/img/products
+          git diff --cached --quiet || git commit -m "Update catalog and product photos"
           git push
