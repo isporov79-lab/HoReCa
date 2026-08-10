@@ -17,28 +17,30 @@ document.addEventListener('DOMContentLoaded', () => {
    1. ЗАГРУЗКА ТОВАРОВ ИЗ EXCEL
    ============================================================ */
 async function loadProducts() {
-  const container = document.querySelector('.products-container');
-  if (!container) return;
+    const container = document.querySelector('.products-container');
+    if (!container) return;
 
-  try {
-    if (typeof XLSX === 'undefined') {
-      throw new Error('Библиотека XLSX не загружена');
+    try {
+        const response = await fetch('catalog.json');
+
+        if (!response.ok) {
+            throw new Error(`Не удалось загрузить catalog.json: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const products = Array.isArray(data.products) ? data.products : [];
+
+        renderProductCards(products);
+
+    } catch (error) {
+        console.error('Ошибка загрузки товаров:', error);
+
+        container.innerHTML = `
+            <div style="padding:20px;color:#b00020;">
+                Не удалось загрузить каталог товаров.
+            </div>
+        `;
     }
-
-    const response = await fetch('assets/files/products.xlsx');
-    if (!response.ok) {
-      throw new Error(`Не удалось загрузить файл: ${response.status}`);
-    }
-
-    const arrayBuffer = await response.arrayBuffer();
-    const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const products = XLSX.utils.sheet_to_json(worksheet, { defval: '' });
-
-    renderProductCards(products);
-  } catch (error) {
-    console.error('Ошибка загрузки товаров:', error);
-  }
 }
 
 function formatProductValue(value) {
