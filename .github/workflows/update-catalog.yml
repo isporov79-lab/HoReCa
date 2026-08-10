@@ -1,16 +1,15 @@
 name: Update catalog and photos
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * *"
 
 permissions:
   contents: write
 
 jobs:
-  update:
+  update-catalog:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,46 +17,158 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          clean: true
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install openpyxl pandas requests
+          python -m pip install pandas openpyxl requests
 
-      - name: Sync with main
+      - name: Prepare folders
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git reset --hard origin/main
+          mkdir -p assets/img/products
+          mkdir -p assets/files
+          mkdir -p js
 
       - name: Download photos from Yandex Disk
         run: |
           python scripts/update_catalog.py
 
+      - name: Show downloaded photos
+        run: |
+          echo "========================================"
+          echo "ФОТОГРАФИИ В assets/img/products:"
+          echo "========================================"
+
+          find assets/img/products -maxdepth 1 -type f -printf '%f\n' | sort
+
+          echo "========================================"
+          echo "Количество файлов:"
+          find assets/img/products -maxdepth 1 -type f | wc -l
+          echo "========================================"
+
+      - name: Check Excel file
+        run: |
+          if [ ! -f "assets/files/products.xlsx" ]; then
+            echo "ОШИБКА: assets/files/products.xlsx не найден"
+            exit 1
+          fi
+
+          echo "Excel найден:"
+          ls -lh assets/files/products.xlsx
+
       - name: Convert Excel to catalog JSON
         run: |
           python convert_catalog.py
+
+      - name: Check generated catalog
+        run: |
+          echo "========================================"
+          echo "Проверка catalog.json"
+          echo "========================================"
+
+          if [ ! -f "catalog.json" ]; then
+            echo "ОШИБКА: catalog.json не создан"
+            exit 1
+          fi
+
+          if [ ! -f "js/catalog-data.js" ]; then
+            echo "ОШИБКА: js/catalog-data.js не создан"
+            exit 1
+          fi
+
+          ls -lh catalog.json
+          ls -lh js/catalog-data.js
+
+      - name: Verify catalog image files
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          catalog_file = Path("catalog.json")
+          image_dir = Path("assets/img/products")
+
+          data = json.loads(catalog_file.read_text(encoding="utf-8"))
+          products = data.get("products", [])
+
+          print("========================================")
+          print("ПРОВЕРКА ФОТОГРАФИЙ ИЗ КАТАЛОГА")
+          print("========================================")
+
+          missing = []
+          found = []
+
+          for product in products:
+              image = str(product.get("image", "") or "").strip()
+
+              if not image:
+                  continue
+
+              # В каталоге путь может быть:
+              # assets/img/products/filename.png
+              # или просто filename.png
+              filename = Path(image).name
+              file_path = image_dir / filename
+
+              if file_path.exists():
+                  found.append(filename)
+              else:
+                  missing.append(filename)
+
+          print(f"Товаров: {len(products)}")
+          print(f"Фото найдено: {len(found)}")
+          print(f"Фото НЕ найдено: {len(missing)}")
+
+          if missing:
+              print("")
+              print("НЕ НАЙДЕННЫЕ ФОТО:")
+              for filename in missing:
+                  print(" -", filename)
+
+              print("")
+              print("Содержимое assets/img/products:")
+              for file in sorted(image_dir.iterdir()):
+                  if file.is_file():
+                      print(" -", file.name)
+
+              print("")
+              print("ОШИБКА: каталог содержит ссылки на отсутствующие фотографии.")
+              exit(1)
+
+          print("")
+          print("Все фотографии из каталога найдены.")
+          PY
+
+      - name: Show git status
+        run: |
+          echo "========================================"
+          echo "GIT STATUS"
+          echo "========================================"
+
+          git status --short
 
       - name: Save updated catalog and photos
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add catalog.json
-          git add js/catalog-data.js
-          git add assets/img/products
-          git add -f assets/files/products.xlsx
+          git add -A
 
           if git diff --cached --quiet; then
-            echo "Нет изменений для сохранения"
+            echo "Нет изменений для сохранения."
             exit 0
           fi
 
           git commit -m "Update catalog and product photos"
-          git push origin main
+
+          git fetch origin main
+
+          git rebase --autostash origin/main
+
+          git push origin HEAD:main
