@@ -37,8 +37,6 @@
 }
 .excel-product-body {
   padding: 20px;
-  display: flex;
-  flex-direction: column;
 }
 .excel-product-brand {
   color: #666;
@@ -73,7 +71,6 @@
   gap: 10px;
   margin-top: 18px;
   padding-top: 0;
-  flex-shrink: 0;
 }
 .excel-product-prices div {
   background: #fff;
