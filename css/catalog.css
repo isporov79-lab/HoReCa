@@ -73,8 +73,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin-top: auto;
-  padding-top: 18px;
+  margin-top: 18px;
 }
 .excel-product-prices div {
   background: #fff;
