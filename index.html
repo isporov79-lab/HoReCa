@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Мелкий опт безалкогольных напитков для отелей, ресторанов, баров и фитнес-центров. Доставка по Москве и области. Отсрочка до 30 дней. Полный пакет документов.">
+  <title>Напитки для HoReCa — мелкий опт с доставкой | Вода, соки, лимонады, энергетики</title>
+
+  <!-- Preconnect для внешних ресурсов -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+  <!-- Шрифты -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Иконки Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" defer>
+
+  <!-- Критический CSS инлайн (первый экран) -->
+  <style>
+    :root {
+      --bg-main: #ffffff;
+      --bg-card: #f5f7fa;
+      --bg-card-hover: #eef1f5;
+      --accent: #00db99;
+      --accent-dark: #00b37e;
+      --btn-primary-bg: #2a2f38;
+      --btn-primary-text: #ffffff;
+      --text-main: #1a1a1a;
+      --text-muted: #666666;
+      --border: #e0e4e8;
+      --gold: #d4af37;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    .btn {
+      display: inline-block;
+      padding: 16px 24px;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+    }
+    .btn-primary:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); }
+    .btn-secondary {
+      background: #ffffff;
+      color: #121212;
+    }
+    .btn-secondary:hover { box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      border: 2px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+    .section { padding: 80px 0; }
+    .section-title {
+      font-size: clamp(28px, 4vw, 42px);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 48px;
+      font-size: 18px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-hot { background: #ff6b6b; color: #fff; }
+    .badge-premium { background: var(--gold); color: #121212; }
+    .badge-hit { background: var(--accent); color: #121212; }
+    .updated-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(0, 219, 153, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(0, 219, 153, 0.3);
+    }
+  </style>
+
+  <!-- Полный CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== ШАПКА ===== -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="#" class="logo">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="40" height="40" rx="10" fill="#00db99"/>
+          <path d="M12 28V12h4l8 10V12h4v16h-4l-8-10v10h-4z" fill="#121212"/>
+        </svg>
+        <span class="logo-text">HoReCa<span class="logo-accent">Drinks</span></span>
+      </a>
+
+      <nav class="nav" id="nav">
+        <a href="#categories">Категории</a>
+        <a href="#segments">Сегменты</a>
+        <a href="#conditions">Условия</a>
+        <a href="#accounting">Бухгалтерии</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="tel:+74950000000" class="header-phone"><i class="fas fa-phone"></i> +7 (495) 000-00-00</a>
+        <a href="#form" class="btn btn-primary btn-sm">Получить прайс</a>
+        <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== БЛОК 1: HERO ===== -->
+  <section class="hero section-spaced" id="hero">
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <h1>Напитки для отелей и ресторанов — <span class="accent-text">мелкий опт</span> с доставкой</h1>
+        <p class="hero-subtitle">Вода, соки, лимонады и энергетики для номерного фонда, мини-баров, ресторанов и фитнес-зон. От 1 коробки, с полным пакетом документов.</p>
+
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-number">200+</span>
+            <span class="stat-label">отелей и ресторанов</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">500+</span>
+            <span class="stat-label">коробок в день</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">2015</span>
+            <span class="stat-label">работаем с года</span>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <a href="calculator.html" class="btn btn-secondary">Скачать прайс</a>
+          <a href="https://t.me/twigasip_bot" target="_blank" rel="noopener noreferrer" class="btn btn-telegram">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M22 11.044C22 10.83 21.93 10.63 21.81 10.47L17.42 4.37C17.22 4.1 16.85 4 16.5 4H7.5C7.24 4 7 4.2 7 4.46C7 4.55 7.02 4.64 7.05 4.73L10.25 15.12L9.1 18.5C9 18.8 9.2 19 9.5 19L10.5 19C10.8 19 11 18.8 11 18.5L12.5 14L15.5 16.5C15.6 16.6 15.8 16.6 15.9 16.6L16 16.6C16.3 16.6 16.5 16.4 16.6 16.1L21.5 6.34C21.6 6.14 21.8 6.04 22 6.04C22 6.04 22 11.044 22 11.044Z" fill="white"/>
+            </svg>
+            Заказать в Telegram
+          </a>
+        </div>
+        <p class="hero-note"><i class="fas fa-shield-alt"></i> Не передаём контакты третьим лицам</p>
+      </div>
+
+      <div class="hero-visual">
+        <!-- TODO: заменить на реальное фото напитков -->
+        <img src="https://picsum.photos/seed/drinks/600/700" alt="Ассортимент безалкогольных напитков для отелей и ресторанов" class="hero-img" fetchpriority="high">
+        <div class="hero-card hero-card-1">
+          <i class="fas fa-truck"></i>
+          <div>
+            <strong>Доставка</strong>
+            <span>на следующий день</span>
+          </div>
+        </div>
+        <div class="hero-card hero-card-2">
+          <i class="fas fa-file-invoice"></i>
+          <div>
+            <strong>Документы</strong>
+            <span>УПД, сертификаты</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== БЛОК 2: ПРЕИМУЩЕСТВА ===== -->
+  <section class="section advantages" id="advantages">
+    <div class="container">
+      <h2 class="section-title">Почему выбирают нас</h2>
+      <p class="section-subtitle">Работаем как партнёр для вашего бизнеса — снимаем вопросы закупки, логистики и документов</p>
+
+      <div class="advantages-grid">
+        <div class="advantage-card">
+          <div class="advantage-icon"><i class="fas fa-truck-fast"></i></div>
+          <h3>Доставка без доплат</h3>
+          <p>Доставим до отеля или ресторана без доплат при заказе от 10 коробок.</p>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-icon"><i class="fas fa-calendar-check"></i></div>
+          <h3>Отсрочка до 30 дней</h3>
+          <p>Для постоянных клиентов — гибкие условия оплаты и отсрочка платежа.</p>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-icon"><i class="fas fa-file-shield"></i></div>
+          <h3>Все документы</h3>
+          <p>Декларации, сертификаты, маркировка «Честный знак» — полный пакет.</p>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-icon"><i class="fas fa-box-open"></i></div>
+          <h3>Мелкий опт</h3>
+          <p>От 1 коробки — без минимального объёма. Идеально для тестовой партии.</p>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-icon"><i class="fas fa-warehouse"></i></div>
+          <h3>Стабильные поставки</h3>
+          <p>95% позиций всегда в наличии на складе. Не подведём к сезону.</p>
+        </div>
+        <div class="advantage-card">
+          <div class="advantage-icon"><i class="fas fa-list-check"></i></div>
+          <h3>Подбор ассортимента</h3>
+          <p>Соберём набор под требования вашей сети и сегмент номеров.</p>
+        </div>
+      </div>
+
+      <div class="advantages-cta">
+        <a href="#form" class="btn btn-primary">Получить прайс-лист</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== БЛОК 3: УСЛОВИЯ СОТРУДНИЧЕСТВА ===== -->
+  <section class="section conditions" id="conditions">
+    <div class="container">
+      <h2 class="section-title">Условия сотрудничества</h2>
+      <p class="section-subtitle">Прозрачные условия для отдела закупок — всё, что нужно знать до звонка</p>
+
+      <div class="conditions-grid">
+        <div class="condition-item">
+          <span class="condition-label">НДС</span>
+          <span class="condition-value">Да, работаем с НДС</span>
+        </div>
+        <div class="condition-item">
+          <span class="condition-label">Отсрочка</span>
+          <span class="condition-value">До 30 дней</span>
+        </div>
+        <div class="condition-item">
+          <span class="condition-label">Мин. партия</span>
+          <span class="condition-value">От 1 коробки</span>
+        </div>
+        <div class="condition-item">
+          <span class="condition-label">Зона доставки</span>
+          <span class="condition-value">Москва + 50 км</span>
+        </div>
+        <div class="condition-item">
+          <span class="condition-label">Скидки от объёма</span>
+          <span class="condition-value">от 50 кор. — от 5%, от 100 кор. — от 8%</span>
+        </div>
+        <div class="condition-item">
+          <span class="condition-label">Цены</span>
+          <span class="condition-value">Рубли, с НДС, за шт. и за коробку</span>
+        </div>
+      </div>
+
+      <p class="conditions-note">
+        <i class="fas fa-info-circle"></i>
+        Цены актуальны на дату скачивания, действуют 7 дней. Размер скидки согласовывается индивидуально.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== БЛОК 4: КАТЕГОРИИ ТОВАРОВ ===== -->
+  <section class="section categories" id="categories">
+    <div class="container">
+      <h2 class="section-title">Категории товаров</h2>
+      <p class="section-subtitle">Ассортимент под каждый сегмент HoReCa — от премиальных номеров до общепита</p>
+
+      <div class="categories-grid">
+        <!-- Вода -->
+        <a href="water.html" class="category-card category-card-link">
+          <div class="category-badge"><span class="badge badge-hot">Лидер продаж</span></div>
+          <div class="category-img">
+            <!-- TODO: заменить на реальное фото воды -->
+            <img src="assets/img/categories/watter.jpg" alt="Вода негазированная и газированная 0.33-0.5 л в индивидуальной упаковке" loading="lazy">
+          </div>
+          <div class="category-body">
+            <h3>Вода</h3>
+            <p>Негазированная 0.33–0.5 л в индивидуальной упаковке для номеров, газированная — для ресторанов и баров.</p>
+            <ul class="category-params">
+              <li><i class="fas fa-box"></i> Мин. партия: от 1 коробки (24 шт.)</li>
+              <li><i class="fas fa-bottle-water"></i> Фасовка: 0.33–0.5 л</li>
+              <li><i class="fas fa-clock"></i> Срок годности: 12 мес.</li>
+            </ul>
+          </div>
+        </a>
+
+        <!-- Соки и нектары -->
+        <a href="juice.html" class="category-card category-card-link">
+          <div class="category-badge"><span class="badge badge-premium">Премиум</span></div>
+          <div class="category-img">
+            <!-- TODO: заменить на реальное фото соков -->
+            <img src="https://picsum.photos/seed/juice/400/300" alt="Соки и нектары в стекле 0.2-0.33 л для премиальных номеров и в ПЭТ 1 л для общепита" loading="lazy">
+          </div>
+          <div class="category-body">
+            <h3>Соки и нектары</h3>
+            <p>В стекле 0.2–0.33 л — премиальный сегмент номеров. В ПЭТ 1 л — для общепита и мини-баров оптом.</p>
+            <ul class="category-params">
+              <li><i class="fas fa-box"></i> Мин. партия: от 1 коробки</li>
+              <li><i class="fas fa-bottle-water"></i> Фасовка: стекло 0.2–0.33 л / ПЭТ 1 л</li>
+              <li><i class="fas fa-clock"></i> Срок годности: 12 мес.</li>
+            </ul>
+          </div>
+        </a>
+
+        <!-- Лимонады -->
+        <a href="lemonade.html" class="category-card category-card-link">
+          <div class="category-badge"><span class="badge badge-hit">Хит мини-баров</span></div>
+          <div class="category-img">
+            <!-- TODO: заменить на реальное фото лимонадов -->
+            <img src="https://picsum.photos/seed/lemonade/400/300" alt="Безалкогольные напитки и лимонады классика и экзотика для мини-баров" loading="lazy">
+          </div>
+          <div class="category-body">
+            <h3>Лимонады и напитки</h3>
+            <p>Классика (кола, лимонад) для ресторанов. Экзотика и ягодные вкусы — для мини-баров.</p>
+            <ul class="category-params">
+              <li><i class="fas fa-box"></i> Мин. партия: от 1 коробки</li>
+              <li><i class="fas fa-bottle-water"></i> Фасовка: стекло 0.5 л / ПЭТ</li>
+              <li><i class="fas fa-clock"></i> Срок годности: 12 мес.</li>
+            </ul>
+          </div>
+        </a>
+
+        <!-- Энергетики -->
+        <a href="energy.html" class="category-card category-card-link">
+          <div class="category-img">
+            <!-- TODO: заменить на реальное фото энергетиков -->
+            <img src="https://picsum.photos/seed/energy/400/300" alt="Энергетические напитки для баров и фитнес-зон отелей" loading="lazy">
+          </div>
+          <div class="category-body">
+            <h3>Энергетики</h3>
+            <p>Для баров и фитнес-зон отелей. Популярные бренды, стабильное наличие.</p>
+            <ul class="category-params">
+              <li><i class="fas fa-box"></i> Мин. партия: от 1 коробки</li>
+              <li><i class="fas fa-bottle-water"></i> Фасовка: банка 0.25–0.5 л</li>
+              <li><i class="fas fa-clock"></i> Срок годности: 12 мес.</li>
+            </ul>
+          </div>
+        </a>
+      </div>
+
+      <div class="brands-note">
+        <p><i class="fas fa-check-circle"></i> В наличии популярные бренды: <strong>Святой Источник, Черноголовка, IL Primo, Gipopo</strong> и другие. Подбор ассортимента под требования сети.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== БЛОК 5: СЕГМЕНТЫ HoReCa ===== -->
+  <section class="section segments" id="segments">
+    <div class="container">
+      <h2 class="section-title">Сегменты HoReCa</h2>
+      <p class="section-subtitle">Готовые комплектации под каждый формат — «примерьте» предложение на себя</p>
+
+      <div class="segments-grid">
+        <div class="segment-card">
+          <div class="segment-icon"><i class="fas fa-hotel"></i></div>
+          <h3>Отели и гостиницы</h3>
+          <p class="segment-desc">Для мини-бара: вода 0.33 л, соки в стекле 0.2 л, лимонады 0.5 л — готовый набор на номер.</p>
+          <ul class="segment-list">
+            <li>Номерной фонд</li>
+            <li>Мини-бары</li>
+            <li>Завтраки</li>
+          </ul>
+        </div>
+        <div class="segment-card">
+          <div class="segment-icon"><i class="fas fa-utensils"></i></div>
+          <h3>Рестораны и кафе</h3>
+          <p class="segment-desc">ПЭТ-упаковки 1 л, газированные напитки в банках, энергетики коробками.</p>
+          <ul class="segment-list">
+            <li>Основное меню</li>
+            <li>Барная карта</li>
+            <li>Доставка</li>
+          </ul>
+        </div>
+        <div class="segment-card">
+          <div class="segment-icon"><i class="fas fa-martini-glass-citrus"></i></div>
+          <h3>Бары и лаунджи</h3>
+          <p class="segment-desc">Энергетики, лимонады-экзотика, газированная вода — для коктейлей и миксов.</p>
+          <ul class="segment-list">
+            <li>Коктейльная карта</li>
+            <li>Миксы</li>
+            <li>Энергетики</li>
+          </ul>
+        </div>
+        <div class="segment-card">
+          <div class="segment-icon"><i class="fas fa-dumbbell"></i></div>
+          <h3>Фитнес и спа</h3>
+          <p class="segment-desc">Вода 0.5 л, энергетики, изотоники — для фитнес-зон и спа-комплексов.</p>
+          <ul class="segment-list">
+            <li>Фитнес-бары</li>
+            <li>Спа-зоны</li>
+            <li>Ресепшн</li>
+          </ul>
+        </div>
+        <div class="segment-card">
+          <div class="segment-icon"><i class="fas fa-people-roof"></i></div>
+          <h3>Кейтеринг</h3>
+          <p class="segment-desc">Разовые и регулярные поставки под мероприятия, конференции и банкеты.</p>
+          <ul class="segment-list">
+            <li>Мероприятия</li>
+            <li>Конференции</li>
+            <li>Банкеты</li>
+          </ul>
+        </div>
+        <div class="segment-card">
+          <div class="segment-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 2C13.1 2 14 2.9 14 4V6C14 7.1 13.1 8 12 8C10.9 8 10 7.1 10 6V4C10 2.9 10.9 2 12 2Z" fill="currentColor"/>
+              <path d="M5 12C3.9 12 3 12.9 3 14V18C3 19.1 3.9 20 5 20H19C20.1 20 21 19.1 21 18V14C21 12.9 20.1 12 19 12H5Z" fill="currentColor"/>
+              <path d="M7 14H17V18H7V14Z" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3>Таксопарки и автопарки</h3>
+          <p class="segment-desc">Напитки для водителей и пассажиров: удобные форматы упаковки, оптовые цены, быстрая доставка.</p>
+          <ul class="segment-list">
+            <li>Фасовка под авто</li>
+            <li>Доставка в парк</li>
+            <li>Спеццены на воду</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== БЛОК 6: КАК МЫ РАБОТАЕМ ===== -->
+  <section class="section how" id="how">
+    <div class="container">
+      <h2 class="section-title">Как мы работаем</h2>
+      <p class="section-subtitle">Прозрачный процесс — от заявки до регулярных поставок</p>
+
+      <div class="how-grid">
+        <div class="how-step">
+          <span class="step-number">1</span>
+          <h3>Заявка</h3>
+          <p>Оставьте заявку или скачайте прайс. Менеджер свяжется в течение рабочего дня.</p>
+          <span class="step-time"><i class="fas fa-clock"></i> Расчёт прайса — 1 рабочий день</span>
+        </div>
+        <div class="how-step">
+          <span class="step-number">2</span>
+          <h3>Согласование</h3>
+          <p>Подберём ассортимент под ваш сегмент, согласуем объём, цены и документы.</p>
+        </div>
+        <div class="how-step">
+          <span class="step-number">3</span>
+          <h3>Доставка</h3>
+          <p>Привезём заказ до двери отеля или ресторана. Разгрузка и приёмка — на месте.</p>
+          <span class="step-time"><i class="fas fa-clock"></i> Доставка — на следующий день при наличии на складе</span>
+        </div>
+        <div class="how-step">
+          <span class="step-number">4</span>
+          <h3>Регулярные поставки</h3>
+          <p>Настроим график поставок и отсрочку для постоянных клиентов.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== БЛОК 7: ДЛЯ БУХГАЛТЕРИИ ===== -->
+  <section class="section accounting" id="accounting">
+    <div class="container">
+      <h2 class="section-title">Для бухгалтерии</h2>
+      <p class="section-subtitle">Полный пакет документов и работа по ЭДО — без вопросов при согласовании</p>
+
+      <div class="accounting-grid">
+        <div class="accounting-item">
+          <i class="fas fa-file-invoice"></i>
+          <h3>Полный пакет документов</h3>
+          <p>УПД, сертификаты, декларации, транспортные накладные.</p>
+        </div>
+        <div class="accounting-item">
+          <i class="fas fa-exchange-alt"></i>
+          <h3>Работа по ЭДО</h3>
+          <p>УПД со статусом 1 (счёт-фактура + накладная) в Диадок и СБИС.</p>
+        </div>
+        <div class="accounting-item">
+          <i class="fas fa-qrcode"></i>
+          <h3>«Честный знак»</h3>
+          <p>Оформляем УПД, вывод из оборота — по договору силами поставщика или клиента (на выбор).</p>
+        </div>
+      </div>
+
+      <div class="accounting-cta">
+        <a href="#form" class="btn btn-outline">Запросить пакет документов</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== БЛОК 8: КЕЙС-ПРИМЕР ===== -->
+  <section class="section case" id="case">
+    <div class="container">
+      <h2 class="section-title">Пример поставки</h2>
+      <p class="section-subtitle">Реальный расчёт для отеля 3★ на 50 номеров</p>
+
+      <div class="case-card">
+        <div class="case-header">
+          <h3>Отель 3★, 50 номеров</h3>
+          <span class="badge badge-hit">Готовый расчёт</span>
+        </div>
+        <div class="case-table">
+          <div class="case-row case-row-head">
+            <span>Позиция</span>
+            <span>Объём</span>
+            <span>Сумма</span>
+          </div>
+          <div class="case-row">
+            <span>Вода негазированная 0.33 л (инд. упаковка)</span>
+            <span>50 коробок</span>
+            <span>12 500 ₽</span>
+          </div>
+          <div class="case-row">
+            <span>Соки в стекле 0.2 л (премиум)</span>
+            <span>30 коробок</span>
+            <span>9 000 ₽</span>
+          </div>
+          <div class="case-row">
+            <span>Лимонады 0.5 л (мини-бар)</span>
+            <span>20 коробок</span>
+            <span>6 000 ₽</span>
+          </div>
+          <div class="case-row">
+            <span>Энергетики 0.25 л (фитнес-зона)</span>
+            <span>10 коробок</span>
+            <span>3 500 ₽</span>
+          </div>
+          <div class="case-row case-row-total">
+            <span>Итого</span>
+            <span>110 коробок</span>
+            <span>31 000 ₽</span>
+          </div>
+        </div>
+        <div class="case-benefits">
+          <div class="case-benefit">
+            <i class="fas fa-truck"></i>
+            <span>Экономия на логистике за счёт доставки до двери: <strong>~15 000 ₽</strong></span>
+          </div>
+          <div class="case-benefit">
+            <i class="fas fa-percent"></i>
+            <span>Цена ниже среднерыночной по Москве на <strong>7–12%</strong></span>
+          </div>
+          <div class="case-benefit">
+            <i class="fas fa-clock"></i>
+            <span>Срок доставки: <strong>на следующий день</strong></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== БЛОК 9: FAQ ===== -->
+  <section class="section faq" id="faq">
+    <div class="container">
+      <h2 class="section-title">Частые вопросы</h2>
+      <p class="section-subtitle">Ответы на вопросы, которые чаще всего задают закупщики</p>
+
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Есть ли отсрочка платежа?</summary>
+          <p>Да, для постоянных клиентов — отсрочка до 30 дней. Условия согласовываются индивидуально при заключении договора.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Как оформить документы и сертификаты?</summary>
+          <p>Предоставляем полный пакет: УПД, сертификаты соответствия, декларации, транспортные накладные. Работаем по ЭДО (Диадок, СБИС).</p>
+        </details>
+        <details class="faq-item">
+          <summary>Как вы работаете с «Честным знаком»?</summary>
+          <p>Оформляем УПД, вывод из оборота — по договору силами поставщика или клиента (на выбор). Работаем через ЭДО.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Как оформить тестовую партию?</summary>
+          <p>От 1 коробки, доставка по зоне, документы в ЭДО. Идеально, чтобы оценить качество и ассортимент перед регулярными поставками.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Какие сроки доставки?</summary>
+          <p>Доставка на следующий день при наличии на складе. По Москве и области (+50 км) — без доплат от 10 коробок.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Работаете ли с НДС?</summary>
+          <p>Да, работаем с НДС. Цены указаны в рублях, с НДС, за единицу и за коробку.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== БЛОК 10: КОРОТКАЯ ФОРМА ЗАЯВКИ ===== -->
+  <section class="section form-section section-spaced" id="form">
+    <div class="container">
+      <div class="form-wrapper">
+
+        <!-- Левая часть -->
+        <div class="form-info">
+          <span class="form-eyebrow">Бесплатный расчёт</span>
+
+          <h2 class="section-title">
+            Получите оптовый прайс
+          </h2>
+
+          <p class="section-subtitle">
+            Оставьте контакты — менеджер свяжется с вами,
+            уточнит объём и подготовит актуальный расчёт.
+          </p>
+
+          <ul class="form-benefits">
+            <li>
+              <i class="fas fa-check" aria-hidden="true"></i>
+              Прайс и расчёт под ваш объём
+            </li>
+
+            <li>
+              <i class="fas fa-check" aria-hidden="true"></i>
+              Подбор ассортимента под ваш сегмент
+            </li>
+
+            <li>
+              <i class="fas fa-check" aria-hidden="true"></i>
+              НДС, ЭДО и полный пакет документов
+            </li>
+
+            <li>
+              <i class="fas fa-check" aria-hidden="true"></i>
+              От 1 коробки
+            </li>
+          </ul>
+
+          <div class="form-response-time">
+            <i class="fas fa-clock" aria-hidden="true"></i>
+            <div>
+              <strong>Ответим в течение рабочего дня</strong>
+              <span>В рабочее время стараемся отвечать быстрее.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Правая часть -->
+        <form
+          class="form"
+          id="lead-form"
+          method="post"
+          novalidate
+        >
+
+          <!-- Имя -->
+          <div class="form-group">
+            <label for="name">
+              Имя <span aria-hidden="true">*</span>
+            </label>
+
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Ваше имя"
+              autocomplete="name"
+              minlength="2"
+              required
+            >
+
+            <span class="form-error" id="name-error"></span>
+          </div>
+
+          <!-- Телефон -->
+          <div class="form-group">
+            <label for="phone">
+              Телефон <span aria-hidden="true">*</span>
+            </label>
+
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="+7 (___) ___-__-__"
+              inputmode="tel"
+              autocomplete="tel"
+              required
+            >
+
+            <span class="form-error" id="phone-error"></span>
+          </div>
+
+          <!-- Компания -->
+          <div class="form-group">
+            <label for="company">
+              Компания
+            </label>
+
+            <input
+              type="text"
+              id="company"
+              name="company"
+              placeholder="Название отеля / ресторана"
+              autocomplete="organization"
+            >
+          </div>
+
+          <!-- Сегмент -->
+          <div class="form-group">
+            <label for="segment">
+              Ваш бизнес
+            </label>
+
+            <select id="segment" name="segment">
+              <option value="">Выберите сегмент</option>
+              <option value="hotel">Отель / гостиница</option>
+              <option value="restaurant">Ресторан / кафе</option>
+              <option value="bar">Бар / лаундж</option>
+              <option value="fitness">Фитнес / спа</option>
+              <option value="catering">Кейтеринг</option>
+              <option value="taxi">Таксопарк / автопарк</option>
+              <option value="other">Другое</option>
+            </select>
+          </div>
+
+          <!-- Скрытые UTM-параметры -->
+          <input type="hidden" name="utm_source" id="utm_source">
+          <input type="hidden" name="utm_medium" id="utm_medium">
+          <input type="hidden" name="utm_campaign" id="utm_campaign">
+          <input type="hidden" name="utm_content" id="utm_content">
+          <input type="hidden" name="utm_term" id="utm_term">
+
+          <!-- Согласие -->
+          <div class="form-group form-checkbox">
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                name="privacy"
+                value="yes"
+                required
+              >
+
+              <span>
+                Я согласен на обработку
+                <a href="/privacy-policy.html" target="_blank">
+                  персональных данных
+                </a>
+              </span>
+            </label>
+          </div>
+
+          <!-- Кнопка -->
+          <button
+            type="submit"
+            class="btn btn-primary btn-block"
+            id="lead-submit"
+          >
+            Получить оптовый прайс
+          </button>
+
+          <p class="form-privacy">
+            <i class="fas fa-shield-alt" aria-hidden="true"></i>
+            Контакты не передаём третьим лицам
+          </p>
+
+          <!-- Сообщение об успехе -->
+          <div
+            class="form-success"
+            id="form-success"
+            role="status"
+            aria-live="polite"
+            hidden
+          >
+            <i class="fas fa-check-circle" aria-hidden="true"></i>
+
+            <div>
+              <strong>Заявка отправлена</strong>
+              <p>
+                Спасибо! Менеджер свяжется с вами
+                в течение рабочего дня.
+              </p>
+            </div>
+          </div>
+
+          <!-- Сообщение об ошибке -->
+          <div
+            class="form-general-error"
+            id="form-general-error"
+            role="alert"
+            hidden
+          >
+            Не удалось отправить заявку.
+            Попробуйте ещё раз или позвоните нам.
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== БЛОК 11: ДОКУМЕНТЫ ===== -->
+  <section class="section docs" id="docs">
+    <div class="container">
+      <h2 class="section-title">Документы и прайс-листы</h2>
+      <p class="section-subtitle">Всё для работы отдела закупок и бухгалтерии</p>
+
+      <div class="docs-grid">
+        <div class="doc-card">
+          <i class="fas fa-file-pdf"></i>
+          <h3>Прайс-лист (PDF)</h3>
+          <p>Для просмотра и согласования. <span class="updated-badge"></span></p>
+          <a href="assets/files/price-list.pdf" download class="btn btn-outline btn-sm">Скачать PDF</a>
+        </div>
+        <div class="doc-card">
+          <i class="fas fa-file-excel"></i>
+          <h3>Прайс-лист (Excel)</h3>
+          <p>Для работы: цена за шт., за коробку, РРЦ, скидка при объёме. <span class="updated-badge"></span></p>
+          <a href="assets/files/price-list.xlsx" download class="btn btn-outline btn-sm">Скачать Excel</a>
+        </div>
+        <div class="doc-card">
+          <i class="fas fa-file-contract"></i>
+          <h3>Сертификаты и декларации</h3>
+          <p>Полный пакет документов на продукцию. Маркировка «Честный знак».</p>
+          <a href="#form" class="btn btn-outline btn-sm">Запросить документы</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ФУТЕР ===== -->
+  <footer class="footer" id="contacts">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="#" class="logo">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="40" height="40" rx="10" fill="#00db99"/>
+              <path d="M12 28V12h4l8 10V12h4v16h-4l-8-10v10h-4z" fill="#121212"/>
+            </svg>
+            <span class="logo-text">HoReCa<span class="logo-accent">Drinks</span></span>
+          </a>
+          <p class="footer-desc">Мелкий опт безалкогольных напитков для отелей, ресторанов, баров и фитнес-центров. Работаем с 2015 года.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Контакты</h4>
+          <p><a href="tel:+74950000000"><i class="fas fa-phone"></i> +7 (495) 000-00-00</a></p>
+          <p><a href="mailto:info@horecadrinks.ru"><i class="fas fa-envelope"></i> info@horecadrinks.ru</a></p>
+          <p><i class="fas fa-map-marker-alt"></i> Москва, склад в пределах МКАД</p>
+          <p><i class="fas fa-clock"></i> Пн–Пт: 9:00–19:00</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Навигация</h4>
+          <a href="#categories">Категории</a>
+          <a href="#segments">Сегменты</a>
+          <a href="#conditions">Условия</a>
+          <a href="#accounting">Бухгалтерии</a>
+          <a href="#faq">FAQ</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Документы</h4>
+          <a href="#" class="footer-doc-link"><i class="fas fa-file-alt"></i> Политика обработки ПД</a>
+          <a href="#" class="footer-doc-link"><i class="fas fa-file-contract"></i> Публичная оферта</a>
+          <a href="assets/files/price-list.pdf" download class="footer-doc-link"><i class="fas fa-file-pdf"></i> Прайс-лист (PDF)</a>
+          <a href="assets/files/price-list.xlsx" download class="footer-doc-link"><i class="fas fa-file-excel"></i> Прайс-лист (Excel)</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2024 HoReCaDrinks. Все права защищены.</p>
+        <p class="footer-legal">ИНН 0000000000 · ОГРН 0000000000000 · Условия возврата и сроки годности — по запросу</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script src="js/main.js" defer></script>
+</body>
+</html>
