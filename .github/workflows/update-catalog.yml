@@ -43,16 +43,11 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add catalog.json
-          git add catalog.xlsx
+          git add js/catalog-data.js
+          git add assets/img/products
           git add -f assets/files/products.xlsx
-          git add -f assets/img/products
 
-          if git diff --cached --quiet; then
-            echo "Нет изменений для сохранения."
-            exit 0
-          fi
-
-          git commit -m "Update catalog and product photos"
+          git diff --cached --quiet || git commit -m "Update catalog and product photos"
 
           git pull --rebase origin main
 
