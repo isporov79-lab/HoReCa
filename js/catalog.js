@@ -1,40 +1,42 @@
-```javascript
 (() => {
   const PLACEHOLDER = 'assets/img/products/placeholder.svg';
 
-  function normalize(v) {
-    return String(v ?? '')
+  function normalize(value) {
+    return String(value ?? '')
       .replace(/\s+/g, ' ')
       .trim()
       .toLowerCase();
   }
 
-  function num(v) {
-    const n = Number(String(v ?? '').replace(',', '.'));
+  function number(value) {
+    const n = Number(String(value ?? '').replace(',', '.'));
     return Number.isFinite(n) ? n : NaN;
   }
 
-  function money(v) {
-    const n = num(v);
+  function money(value) {
+    const n = number(value);
 
-    return Number.isFinite(n)
-      ? n.toLocaleString('ru-RU', {
-          maximumFractionDigits: 2
-        }) + ' ₽'
-      : 'по запросу';
+    if (!Number.isFinite(n)) {
+      return 'по запросу';
+    }
+
+    return n.toLocaleString('ru-RU', {
+      maximumFractionDigits: 2
+    }) + ' ₽';
   }
 
-  function volume(v) {
-    const n = num(v);
+  function volume(value) {
+    const n = number(value);
 
-    return Number.isFinite(n)
-      ? String(n).replace('.', ',') + ' л'
-      : String(v ?? '');
+    if (!Number.isFinite(n)) {
+      return String(value ?? '');
+    }
+
+    return String(n).replace('.', ',') + ' л';
   }
 
-  // Безопасный вывод текста в HTML
-  function esc(v) {
-    return String(v ?? '')
+  function escapeHtml(value) {
+    return String(value ?? '')
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
@@ -42,93 +44,63 @@
       .replace(/'/g, '&#039;');
   }
 
-  function yes(v) {
-    return ['да', 'yes', 'true', '1', 'есть'].includes(normalize(v));
+  function isYes(value) {
+    return [
+      'да',
+      'yes',
+      'true',
+      '1',
+      'есть'
+    ].includes(normalize(value));
   }
 
-  // Получение прямой ссылки на файл с Яндекс Диска
-  async function yandexDirectUrl(url) {
-    const share = String(url || '').trim();
+  /*
+   * В catalog-data.js путь уже указан полностью:
+   *
+   * assets/img/products/имя-файла.png
+   *
+   * Поэтому НЕ добавляем assets/img/products/ повторно
+   * и НЕ используем encodeURIComponent().
+   */
+  function getImageUrl(value) {
+    const image = String(value || '').trim();
 
-    if (!/^https?:\/\/disk\.yandex\.(ru|com)\/i\//i.test(share)) {
-      return share;
+    if (!image) {
+      return PLACEHOLDER;
     }
 
-    const api =
-      'https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=' +
-      encodeURIComponent(share);
-
-    try {
-      const r = await fetch(api);
-
-      if (!r.ok) {
-        throw new Error('Yandex HTTP ' + r.status);
-      }
-
-      const data = await r.json();
-
-      return data.href || '';
-    } catch (e) {
-      console.warn('Не удалось получить фото с Яндекс Диска', e);
-      return '';
+    if (/^https?:\/\//i.test(image)) {
+      return image;
     }
+
+    return image;
   }
 
-  // Формирование пути к локальному изображению
-  function localImage(value) {
-  const v = String(value || '').trim();
-
-  if (!v) {
-    return PLACEHOLDER;
-  }
-
-  // Если это полноценная ссылка
-  if (/^https?:\/\//i.test(v)) {
-    return v;
-  }
-
-  // В catalog-data.js уже хранится полный относительный путь.
-  // Ничего дополнительно не кодируем.
-  if (v.startsWith('assets/')) {
-    return v;
-  }
-
-  // Если указано только имя файла
-  return 'assets/img/products/' + v;
-}
-
-    // Если указано только имя файла
-    return 'assets/img/products/' +
-      v.split('/')
-        .map(encodeURIComponent)
-        .join('/');
-  }
-
-  function card(product) {
+  function createCard(product) {
     const article = document.createElement('article');
 
     article.className = 'excel-product-card';
 
-    const badges = [];
+    let badges = '';
 
-    if (yes(product.hit)) {
-      badges.push(
-        '<span class="excel-badge excel-badge-hit">Хит</span>'
-      );
+    if (isYes(product.hit)) {
+      badges +=
+        '<span class="excel-badge excel-badge-hit">Хит</span>';
     }
 
-    if (yes(product.premium)) {
-      badges.push(
-        '<span class="excel-badge excel-badge-premium">Premium</span>'
-      );
+    if (isYes(product.premium)) {
+      badges +=
+        '<span class="excel-badge excel-badge-premium">Premium</span>';
     }
+
+    const imageUrl = getImageUrl(product.image);
 
     article.innerHTML = `
       <div class="excel-product-image">
         <img
           class="excel-product-img"
-          src="${esc(localImage(product.image))}"
-          alt="${esc(product.name)}"
+          src="${escapeHtml(imageUrl)}"
+          alt="${escapeHtml(product.name)}"
           loading="lazy"
         >
       </div>
@@ -137,33 +109,49 @@
 
         ${
           product.brand
-            ? `<div class="excel-product-brand">${esc(product.brand)}</div>`
+            ? `
+              <div class="excel-product-brand">
+                ${escapeHtml(product.brand)}
+              </div>
+            `
             : ''
         }
 
-        <h3>${esc(product.name)}</h3>
+        <h3>
+          ${escapeHtml(product.name)}
+        </h3>
 
         ${
-          product.volume !== '' && product.volume != null
-            ? `<div class="excel-product-meta">
-                Объём: ${esc(volume(product.volume))}
-              </div>`
+          product.volume !== '' &&
+          product.volume !== null &&
+          product.volume !== undefined
+            ? `
+              <div class="excel-product-meta">
+                Объём: ${escapeHtml(volume(product.volume))}
+              </div>
+            `
             : ''
         }
 
         ${
-          product.package !== '' && product.package != null
-            ? `<div class="excel-product-meta">
-                В коробке: ${esc(product.package)} шт.
-              </div>`
+          product.package !== '' &&
+          product.package !== null &&
+          product.package !== undefined
+            ? `
+              <div class="excel-product-meta">
+                В коробке: ${escapeHtml(product.package)} шт.
+              </div>
+            `
             : ''
         }
 
         ${
           product.description
-            ? `<p class="excel-product-description">
-                ${esc(product.description)}
-              </p>`
+            ? `
+              <p class="excel-product-description">
+                ${escapeHtml(product.description)}
+              </p>
+            `
             : ''
         }
 
@@ -175,11 +163,15 @@
           </div>
 
           ${
-            product.box_price !== '' && product.box_price != null
-              ? `<div>
+            product.box_price !== '' &&
+            product.box_price !== null &&
+            product.box_price !== undefined
+              ? `
+                <div>
                   <span>За коробку</span>
                   <strong>${money(product.box_price)}</strong>
-                </div>`
+                </div>
+              `
               : ''
           }
 
@@ -188,11 +180,11 @@
         <div class="excel-product-bottom">
 
           <span class="excel-product-status">
-            ${esc(product.status || '')}
+            ${escapeHtml(product.status || '')}
           </span>
 
           <span class="excel-product-badges">
-            ${badges.join('')}
+            ${badges}
           </span>
 
         </div>
@@ -200,28 +192,22 @@
       </div>
     `;
 
+    /*
+     * Если фотография не загрузилась,
+     * показываем placeholder.
+     */
     const img = article.querySelector('.excel-product-img');
 
-    // Если изображение не найдено — показываем placeholder
-    img.addEventListener(
-      'error',
-      () => {
-        if (img.src !== new URL(PLACEHOLDER, window.location.href).href) {
-          img.src = PLACEHOLDER;
-        }
-      },
-      { once: true }
-    );
+    if (img) {
+      img.addEventListener('error', function () {
+        console.error(
+          'Ошибка загрузки изображения:',
+          imageUrl
+        );
 
-    // Поддержка Яндекс Диска
-    if (
-      /^https?:\/\/disk\.yandex\.(ru|com)\/i\//i.test(
-        String(product.image || '')
-      )
-    ) {
-      yandexDirectUrl(product.image).then(url => {
-        if (url) {
-          img.src = url;
+        if (!img.dataset.placeholder) {
+          img.dataset.placeholder = '1';
+          img.src = PLACEHOLDER;
         }
       });
     }
@@ -229,53 +215,84 @@
     return article;
   }
 
-  function render() {
-    const root = document.querySelector('[data-excel-products]');
+  function renderProducts() {
+    console.log('catalog.js: renderProducts запущен');
 
-    if (!root) {
+    const container =
+      document.querySelector('[data-excel-products]');
+
+    if (!container) {
+      console.error(
+        'catalog.js: контейнер [data-excel-products] не найден'
+      );
       return;
     }
 
-    const category = root.dataset.excelCategory || '';
+    const category =
+      container.dataset.excelCategory || '';
 
-    const data = window.HORECA_CATALOG || {
-      products: []
-    };
+    const catalog =
+      window.HORECA_CATALOG || {};
 
-    const products = Array.isArray(data.products)
-      ? data.products.slice()
-      : [];
+    const products =
+      Array.isArray(catalog.products)
+        ? catalog.products
+        : [];
+
+    console.log(
+      'catalog.js: товаров в каталоге:',
+      products.length
+    );
 
     const filtered = products
-      .filter(
-        p =>
-          !category ||
-          normalize(p.category) === normalize(category)
-      )
-      .sort(
-        (a, b) =>
-          num(a.sort) - num(b.sort)
-      );
+      .filter(product => {
+        if (!category) {
+          return true;
+        }
 
-    root.innerHTML = '';
+        return normalize(product.category) ===
+          normalize(category);
+      })
+      .sort((a, b) => {
+        return number(a.sort) - number(b.sort);
+      });
 
-    if (!filtered.length) {
-      root.innerHTML =
-        '<div class="excel-empty">' +
-        'В этой категории пока нет товаров в Excel-файле.' +
-        '</div>';
+    console.log(
+      'catalog.js: товаров категории "' +
+      category +
+      '":',
+      filtered.length
+    );
+
+    container.innerHTML = '';
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="excel-empty">
+          В этой категории пока нет товаров.
+        </div>
+      `;
 
       return;
     }
 
     filtered.forEach(product => {
-      root.appendChild(card(product));
+      container.appendChild(
+        createCard(product)
+      );
     });
   }
 
-  document.addEventListener(
-    'DOMContentLoaded',
-    render
-  );
+  /*
+   * Запускаем после загрузки HTML.
+   */
+  if (document.readyState === 'loading') {
+    document.addEventListener(
+      'DOMContentLoaded',
+      renderProducts
+    );
+  } else {
+    renderProducts();
+  }
+
 })();
-```
