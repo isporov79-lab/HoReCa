@@ -108,9 +108,9 @@
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  margin-top: 12px;
-  min-height: 28px;
-}
+  margin-top: auto;
+  padding-top: 16px;
+  flex-shrink: 0;
 }
 .excel-product-status { color: #00a978; font-size: 13px; font-weight: 700; }
 .excel-product-badges { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
