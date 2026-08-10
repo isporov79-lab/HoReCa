@@ -79,7 +79,7 @@ function createProductCard(product) {
   card.innerHTML = `
     <div class="product-image">
       <img 
-        src="assets/img/products/${imageUrl}" 
+        src="${imageUrl}"
         alt="${name}" 
         class="product-img"
       >
