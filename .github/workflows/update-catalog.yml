@@ -31,6 +31,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install openpyxl requests pandas
 
+      - name: Sync with main
+        run: |
+          git pull --rebase origin main
+
       - name: Download photos from Yandex Disk
         run: |
           python scripts/update_catalog.py
@@ -47,7 +51,6 @@ jobs:
           git add catalog.json
           git add catalog.xlsx
           git add assets/img/products
-
           git add -f assets/files/products.xlsx
 
           if git diff --cached --quiet; then
@@ -56,7 +59,5 @@ jobs:
           fi
 
           git commit -m "Update catalog and product photos [skip ci]"
-
-          git pull --rebase origin main
 
           git push origin main
