@@ -18,16 +18,21 @@
   box-shadow: 0 14px 34px rgba(0,0,0,.09);
 }
 .excel-product-image {
-  height: 250px;
+  height: 210px;
+  padding: 25px 35px;
   background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+  overflow: hidden;
 }
+
 .excel-product-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  display: block;
 }
 .excel-product-body { padding: 20px; }
 .excel-product-brand {
