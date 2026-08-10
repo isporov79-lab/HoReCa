@@ -81,17 +81,6 @@
 
     article.className = 'excel-product-card';
 
-    let badges = '';
-
-    if (isYes(product.hit)) {
-      badges +=
-        '<span class="excel-badge excel-badge-hit">Хит</span>';
-    }
-
-    if (isYes(product.premium)) {
-      badges +=
-        '<span class="excel-badge excel-badge-premium">Premium</span>';
-    }
 
     const imageUrl = getImageUrl(product.image);
 
@@ -180,18 +169,7 @@
           Цены указаны с НДС
         </div>
         
-        <div class="excel-product-bottom">
-
-          <span class="excel-product-status">
-            ${escapeHtml(product.status || '')}
-          </span>
-
-          <span class="excel-product-badges">
-            ${badges}
-          </span>
-
-        </div>
-
+       
       </div>
     `;
 
