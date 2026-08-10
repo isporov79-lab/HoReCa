@@ -55,6 +55,7 @@
   letter-spacing: -0.2px;
   margin: 0 0 10px;
   min-height: 44px;
+  min-height: 65px;
 }
 .excel-product-meta {
   color: #666;
@@ -63,6 +64,9 @@
   line-height: 1.5;
   font-weight: 500;
   margin-top: 4px;
+}
+  .excel-product-meta:last-of-type {
+  min-height: 20px;
 }
 .excel-product-description { margin-top: 10px; color: #666; font-size: 14px; }
 .excel-product-prices {
