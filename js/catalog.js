@@ -7,7 +7,6 @@
       .trim()
       .toLowerCase();
   }
-
   function number(value) {
     const n = Number(String(value ?? '').replace(',', '.'));
     return Number.isFinite(n) ? n : NaN;
