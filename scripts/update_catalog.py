@@ -100,8 +100,8 @@ def main():
                     if chunk:
                         f.write(chunk)
 
-            # The website's existing JS expects a filename in products.xlsx.
-            ws.cell(row=row, column=image_col).value = filename
+            # Save the local image path for the website.
+        ws.cell(row=row, column=image_col).value = f"assets/img/products/{filename}"
             downloaded += 1
             print(f"OK: {value} -> {filename}")
         except Exception as exc:
