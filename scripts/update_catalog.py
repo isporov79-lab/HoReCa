@@ -101,7 +101,7 @@ def main():
                         f.write(chunk)
 
             # Save the local image path for the website.
-        ws.cell(row=row, column=image_col).value = f"assets/img/products/{filename}"
+            ws.cell(row=row, column=image_col).value = f"assets/img/products/{filename}"
             downloaded += 1
             print(f"OK: {value} -> {filename}")
         except Exception as exc:
