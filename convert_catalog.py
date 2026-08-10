@@ -4,7 +4,7 @@ import json, re
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parent
-EXCEL = ROOT / "catalog.xlsx"
+EXCEL = ROOT / "assets" / "files" / "products.xlsx"
 JSON_OUT = ROOT / "catalog.json"
 JS_OUT = ROOT / "js" / "catalog-data.js"
 
