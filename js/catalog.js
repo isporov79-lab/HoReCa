@@ -176,7 +176,10 @@
           }
 
         </div>
-
+         <div class="excel-product-vat">
+          Цены указаны с НДС
+        </div>
+        
         <div class="excel-product-bottom">
 
           <span class="excel-product-status">
