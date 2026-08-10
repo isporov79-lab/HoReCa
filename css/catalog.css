@@ -33,7 +33,7 @@
   height: 100%;
   object-fit: contain;
   display: block;
-  transform: scale(0.85);
+  transform: scale(0.65);
 }
 .excel-product-body { padding: 20px; }
 .excel-product-brand {
