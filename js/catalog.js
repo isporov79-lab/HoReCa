@@ -76,28 +76,26 @@
 
   // Формирование пути к локальному изображению
   function localImage(value) {
-    const v = String(value || '').trim();
+  const v = String(value || '').trim();
 
-    if (!v) {
-      return PLACEHOLDER;
-    }
+  if (!v) {
+    return PLACEHOLDER;
+  }
 
-    // Если в данных уже указана полная ссылка
-    if (/^https?:\/\//i.test(v)) {
-      return v;
-    }
+  // Если это полноценная ссылка
+  if (/^https?:\/\//i.test(v)) {
+    return v;
+  }
 
-    // В catalog-data.js путь уже начинается с assets/img/products/
-    if (v.startsWith('assets/img/products/')) {
-      return v
-        .split('/')
-        .map((part, index) =>
-          index === 0 || index === 1 || index === 2
-            ? part
-            : encodeURIComponent(part)
-        )
-        .join('/');
-    }
+  // В catalog-data.js уже хранится полный относительный путь.
+  // Ничего дополнительно не кодируем.
+  if (v.startsWith('assets/')) {
+    return v;
+  }
+
+  // Если указано только имя файла
+  return 'assets/img/products/' + v;
+}
 
     // Если указано только имя файла
     return 'assets/img/products/' +
