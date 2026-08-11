@@ -309,20 +309,77 @@ function saveCart(cart) {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
 }
 
+// Изменение количества коробок
 document.addEventListener('click', (e) => {
+  const minus = e.target.closest('.excel-product-qty-minus');
+  const plus = e.target.closest('.excel-product-qty-plus');
+
+  if (minus || plus) {
+    const button = minus || plus;
+    const card = button.closest('.excel-product-card');
+
+    if (!card) return;
+
+    const value = card.querySelector('.excel-product-qty-value');
+
+    let quantity = Number(value.textContent) || 1;
+
+    if (minus) {
+      quantity = Math.max(1, quantity - 1);
+    }
+
+    if (plus) {
+      quantity += 1;
+    }
+
+    value.textContent = quantity;
+
+    const label = card.querySelector('.excel-product-qty-label');
+
+    if (label) {
+      label.textContent =
+        quantity === 1 ? 'коробка' :
+        quantity < 5 ? 'коробки' :
+        'коробок';
+    }
+
+    return;
+  }
+
+  // Добавление в корзину
   const btn = e.target.closest('.excel-product-cart');
+
   if (!btn) return;
 
+  const card = btn.closest('.excel-product-card');
+
+  if (!card) return;
+
   const id = btn.dataset.productId;
+
+  const quantityElement =
+    card.querySelector('.excel-product-qty-value');
+
+  const quantity =
+    Number(quantityElement?.textContent) || 1;
+
   const cart = getCart();
 
-  if (!cart.includes(id)) {
-    cart.push(id);
-    saveCart(cart);
+  const existing = cart.find(item => item.id === id);
 
-    btn.classList.add('in-cart');
-    btn.textContent = '✓ В корзине';
+  if (existing) {
+    existing.quantity += quantity;
+  } else {
+    cart.push({
+      id: id,
+      quantity: quantity
+    });
   }
+
+  saveCart(cart);
+
+  btn.classList.add('in-cart');
+  btn.textContent = '✓ В корзине';
 });
 
 // При загрузке страницы отмечаем уже добавленные товары
