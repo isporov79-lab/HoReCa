@@ -61,8 +61,8 @@
   line-height: 1.35;
   font-weight: 700;
   letter-spacing: -0.2px;
-  margin: 0 0 10px;
-  min-height: 45px;
+  margin: 0 0 4px;
+  min-height: 0;
 }
 .excel-product-meta {
   color: #666;
