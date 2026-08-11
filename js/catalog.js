@@ -168,8 +168,14 @@
           Цены указаны с НДС
         </div>
         
-       
-      </div>
+       <button
+         class="excel-product-cart"
+         type="button"
+         data-product-id="${escapeHtml(product.id || product.name)}"
+     >
+        В корзину
+       </button>
+       </div>
     `;
 
     /*
