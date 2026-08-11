@@ -70,7 +70,7 @@
   font-size: 13px;
   line-height: 1.5;
   font-weight: 500;
-  margin-top: 4px;
+  margin-top: 0;
 }
   .excel-product-meta:last-of-type {
   min-height: 20px;
