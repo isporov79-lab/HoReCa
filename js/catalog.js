@@ -280,5 +280,42 @@
   } else {
     renderProducts();
   }
+// ---------- Корзина ----------
+const CART_KEY = 'horeca_cart';
 
+function getCart() {
+  return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+}
+
+function saveCart(cart) {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.excel-product-cart');
+  if (!btn) return;
+
+  const id = btn.dataset.productId;
+  const cart = getCart();
+
+  if (!cart.includes(id)) {
+    cart.push(id);
+    saveCart(cart);
+
+    btn.classList.add('in-cart');
+    btn.textContent = '✓ В корзине';
+  }
+});
+
+// При загрузке страницы отмечаем уже добавленные товары
+document.addEventListener('DOMContentLoaded', () => {
+  const cart = getCart();
+
+  document.querySelectorAll('.excel-product-cart').forEach(btn => {
+    if (cart.includes(btn.dataset.productId)) {
+      btn.classList.add('in-cart');
+      btn.textContent = '✓ В корзине';
+    }
+  });
+});
 })();
