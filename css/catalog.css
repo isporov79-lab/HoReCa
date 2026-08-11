@@ -90,6 +90,39 @@
   color: #888;
   text-align: center;
 }
+.excel-product-quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 7px 10px;
+  background: #fff;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.excel-product-qty-minus,
+.excel-product-qty-plus {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 6px;
+  background: #f1f3f5;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.excel-product-qty-value {
+  min-width: 18px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.excel-product-qty-label {
+  color: #666;
+}
 .excel-product-prices div {
   background: #fff;
   border-radius: 10px;
