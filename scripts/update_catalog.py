@@ -2,13 +2,13 @@ from pathlib import Path
 from urllib.parse import quote
 import hashlib
 import re
+import shutil
 
 import requests
 from openpyxl import load_workbook
 
 
 ROOT = Path(__file__).resolve().parents[1]
-
 SOURCE_XLSX = ROOT / "catalog.xlsx"
 OUTPUT_XLSX = ROOT / "assets" / "files" / "products.xlsx"
 IMAGE_DIR = ROOT / "assets" / "img" / "products"
@@ -30,7 +30,6 @@ IMAGE_EXTS = {
 def is_yandex_public_link(value):
     if not isinstance(value, str):
         return False
-
     return bool(
         re.search(
             r"https?://(?:www\.)?disk\.yandex\.(?:ru|com|kz|uz|tr)/i/",
@@ -41,12 +40,7 @@ def is_yandex_public_link(value):
 
 
 def safe_name(text):
-    text = re.sub(
-        r"[^0-9A-Za-zА-Яа-яЁё_-]+",
-        "_",
-        str(text),
-    ).strip("_")
-
+    text = re.sub(r"[^0-9A-Za-zА-Яа-яЁё_-]+", "_", str(text)).strip("_")
     return text[:80] or "product"
 
 
@@ -59,11 +53,8 @@ def yandex_download(public_url):
 
     data = api_response.json()
     href = data.get("href")
-
     if not href:
-        raise RuntimeError(
-            "Yandex API did not return download href"
-        )
+        raise RuntimeError("Yandex API did not return download href")
 
     image_response = requests.get(
         href,
@@ -77,11 +68,8 @@ def yandex_download(public_url):
     ).split(";")[0].lower()
 
     ext = IMAGE_EXTS.get(content_type)
-
     if not ext:
-        ext = Path(
-            href.split("?", 1)[0]
-        ).suffix.lower()
+        ext = Path(href.split("?", 1)[0]).suffix.lower()
 
     if ext not in {".jpg", ".jpeg", ".png", ".webp", ".gif"}:
         ext = ".jpg"
@@ -91,21 +79,16 @@ def yandex_download(public_url):
 
 def main():
     if not SOURCE_XLSX.exists():
-        raise SystemExit(
-            f"Не найден файл: {SOURCE_XLSX}"
-        )
+        raise SystemExit(f"Не найден файл: {SOURCE_XLSX}")
 
-    IMAGE_DIR.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
+    IMAGE_DIR.mkdir(parents=True, exist_ok=True)
+    OUTPUT_XLSX.parent.mkdir(parents=True, exist_ok=True)
 
-    OUTPUT_XLSX.parent.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
+    # Не изменяем исходный catalog.xlsx.
+    # Работаем с его копией, которая используется конвертером.
+    shutil.copy2(SOURCE_XLSX, OUTPUT_XLSX)
 
-    wb = load_workbook(SOURCE_XLSX)
+    wb = load_workbook(OUTPUT_XLSX)
     ws = wb[wb.sheetnames[0]]
 
     headers = {
@@ -115,11 +98,8 @@ def main():
     }
 
     image_col = headers.get("image")
-
     if not image_col:
-        raise SystemExit(
-            "В Excel не найдена колонка image"
-        )
+        raise SystemExit("В Excel не найдена колонка image")
 
     name_col = headers.get("name")
     brand_col = headers.get("brand")
@@ -129,43 +109,22 @@ def main():
     skipped = 0
 
     for row in range(2, ws.max_row + 1):
-        value = ws.cell(
-            row=row,
-            column=image_col,
-        ).value
+        value = ws.cell(row=row, column=image_col).value
 
-        # Пропускаем пустые значения
         if not value:
             continue
 
-        # Если фото уже локальное — ничего не скачиваем
-        if isinstance(value, str) and value.startswith(
-            "assets/img/products/"
-        ):
+        if isinstance(value, str) and value.startswith("assets/img/products/"):
             skipped += 1
             continue
 
-        # Обрабатываем только ссылки Yandex Disk
         if not is_yandex_public_link(value):
             continue
 
-        brand = (
-            ws.cell(row=row, column=brand_col).value
-            if brand_col
-            else ""
-        )
+        brand = ws.cell(row=row, column=brand_col).value if brand_col else ""
+        name = ws.cell(row=row, column=name_col).value if name_col else ""
 
-        name = (
-            ws.cell(row=row, column=name_col).value
-            if name_col
-            else ""
-        )
-
-        key = (
-            f"{row}-{brand}-{name}-{value}"
-            .encode("utf-8", "ignore")
-        )
-
+        key = f"{row}-{brand}-{name}-{value}".encode("utf-8", "ignore")
         stem = (
             safe_name(f"{brand}_{name}")
             + "-"
@@ -180,58 +139,39 @@ def main():
                 target = IMAGE_DIR / filename
 
                 with target.open("wb") as f:
-                    for chunk in response.iter_content(
-                        1024 * 64
-                    ):
+                    for chunk in response.iter_content(1024 * 64):
                         if chunk:
                             f.write(chunk)
-
             finally:
                 response.close()
-
-            # ВАЖНО:
-            # именно catalog.xlsx потом читает convert_catalog.py
-            local_path = (
-                f"assets/img/products/{filename}"
-            )
 
             ws.cell(
                 row=row,
                 column=image_col,
-            ).value = local_path
+            ).value = f"assets/img/products/{filename}"
 
             downloaded += 1
-
-            print(
-                f"OK: {value} -> {local_path}"
-            )
+            print(f"OK: {value} -> assets/img/products/{filename}")
 
         except Exception as exc:
             failed += 1
+            print(f"ERROR: {value}: {exc}")
 
-            print(
-                f"ERROR: {value}: {exc}"
-            )
-
-    # Сохраняем ОБНОВЛЁННЫЙ catalog.xlsx
-    # чтобы convert_catalog.py увидел локальные пути
-    wb.save(SOURCE_XLSX)
-
-    # Дополнительно создаём копию
     wb.save(OUTPUT_XLSX)
 
     print(
         f"Готово. Загружено фото: {downloaded}, "
         f"пропущено: {skipped}, ошибок: {failed}"
     )
+    print(f"Рабочий Excel: {OUTPUT_XLSX}")
 
-    print(
-        f"Обновлён: {SOURCE_XLSX}"
-    )
-
-    print(
-        f"Копия создана: {OUTPUT_XLSX}"
-    )
+    # Ошибка скачивания фото не должна незаметно оставить
+    # в каталоге битую ссылку.
+    if failed:
+        raise SystemExit(
+            f"Не удалось скачать {failed} фотографий. "
+            "Каталог не публикуется."
+        )
 
 
 if __name__ == "__main__":
