@@ -85,7 +85,8 @@
   padding-top: 0;
 }
 .excel-product-vat {
-  margin-top: 6px;
+  margin-top: 2px;
+  margin-bottom: -4px;
   font-size: 11px;
   color: #888;
   text-align: center;
