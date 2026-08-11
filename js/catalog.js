@@ -168,13 +168,31 @@
           Цены указаны с НДС
         </div>
         
-       <button
-         class="excel-product-cart"
-         type="button"
-         data-product-id="${escapeHtml(product.id || product.name)}"
-     >
-        В корзину
-       </button>
+      <div class="excel-product-quantity">
+  <button
+    type="button"
+    class="excel-product-qty-minus"
+    data-product-id="${escapeHtml(product.id || product.name)}"
+  >−</button>
+
+  <span class="excel-product-qty-value">1</span>
+
+  <span class="excel-product-qty-label">коробка</span>
+
+  <button
+    type="button"
+    class="excel-product-qty-plus"
+    data-product-id="${escapeHtml(product.id || product.name)}"
+  >+</button>
+</div>
+
+<button
+  class="excel-product-cart"
+  type="button"
+  data-product-id="${escapeHtml(product.id || product.name)}"
+>
+  В корзину
+</button>
        </div>
     `;
 
