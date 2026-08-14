@@ -1,0 +1,30 @@
+/* Backup: блок .excel-product-cart до замены */
+.excel-product-cart {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #282D37;
+  color: #ffffff;
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.excel-product-cart:hover {
+  background: #1f232b;
+  color: #ffffff;
+}
+
+.excel-product-cart:active {
+  background: #1f232b;
+  transform: translateY(2px);
+}
+
+.excel-product-cart.in-cart {
+  background: #1f232b;
+  color: #ffffff;
+}

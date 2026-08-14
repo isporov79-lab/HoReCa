@@ -3,6 +3,7 @@ window.HORECA_CATALOG = {
   "products": [
     {
       "category": "Вода",
+      "subcategory": "С газом",
       "name": "Вода газ. 0.25 л ПЭТ",
       "brand": "Черноголовка",
       "volume": 0.25,
@@ -18,6 +19,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "Без газа",
       "name": "Вода негаз. 0.25 л ПЭТ",
       "brand": "Черноголовка",
       "volume": 0.25,
@@ -33,6 +35,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "С газом",
       "name": "Вода газ. 0.5 л ПЭТ",
       "brand": "Черноголовка",
       "volume": 0.5,
@@ -48,6 +51,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "Без газа",
       "name": "Вода негаз. 0.5 л ПЭТ",
       "brand": "Черноголовка",
       "volume": 0.5,
@@ -63,6 +67,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "С газом",
       "name": "Вода газ. 0.5 л Стекло",
       "brand": "Черноголовка",
       "volume": 0.5,
@@ -78,6 +83,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "Без газа",
       "name": "Вода негаз. 0.5 л Стекло",
       "brand": "Черноголовка",
       "volume": 0.5,
@@ -93,6 +99,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "С газом",
       "name": "Вода газ. 0.33 л Стекло",
       "brand": "Черноголовка",
       "volume": 0.33,
@@ -108,6 +115,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "Без газа",
       "name": "Вода негаз. 0.33 л Стекло",
       "brand": "Черноголовка",
       "volume": 0.33,
@@ -123,6 +131,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "С газом",
       "name": "Вода газ. 0.5 л ПЭТ",
       "brand": "Bona aqua",
       "volume": 0.5,
@@ -138,6 +147,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "Без газа",
       "name": "Вода негаз. 0.5 л ПЭТ",
       "brand": "Bona aqua",
       "volume": 0.5,
@@ -153,6 +163,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "Без газа",
       "name": "Вода негаз. 1 л ПЭТ",
       "brand": "Bona aqua",
       "volume": 1,
@@ -168,6 +179,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "С газом",
       "name": "Вода газ. 1 л ПЭТ",
       "brand": "Bona aqua",
       "volume": 1,
@@ -183,6 +195,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "Без газа",
       "name": "Вода негаз. 0.5 л ПЭТ",
       "brand": "Святой Источник",
       "volume": 0.5,
@@ -198,6 +211,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "С газом",
       "name": "Вода газ. 0.5 л ПЭТ",
       "brand": "Святой Источник",
       "volume": 0.5,
@@ -213,6 +227,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "Без газа",
       "name": "Вода негаз. 1 л ПЭТ",
       "brand": "Святой Источник",
       "volume": 1,
@@ -228,6 +243,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "С газом",
       "name": "Вода газ. 1 л ПЭТ",
       "brand": "Святой Источник",
       "volume": 1,
@@ -243,6 +259,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "С газом",
       "name": "Вода газ. 0.33 л ПЭТ",
       "brand": "Святой Источник",
       "volume": 0.33,
@@ -258,6 +275,7 @@ window.HORECA_CATALOG = {
     },
     {
       "category": "Вода",
+      "subcategory": "Без газа",
       "name": "Вода негаз. 0.33 л ПЭТ",
       "brand": "Святой Источник",
       "volume": 0.33,

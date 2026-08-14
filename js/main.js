@@ -1,4 +1,152 @@
 (() => {
+  // --- Состояние корзины ---
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+  const cartSidebar = document.getElementById('cart-sidebar');
+  const cartItemsContainer = document.getElementById('cart-items');
+  const cartTotalPrice = document.getElementById('cart-total-price');
+
+  // Управление открытием корзины
+  document.getElementById('cart-button').addEventListener('click', () => {
+    renderCart();
+    cartSidebar.classList.add('open');
+  });
+
+  const closeCart = () => cartSidebar.classList.remove('open');
+  document.getElementById('cart-close').addEventListener('click', closeCart);
+  document.getElementById('cart-overlay').addEventListener('click', closeCart);
+
+  const cartClear = document.getElementById('cart-clear');
+  if (cartClear) {
+    cartClear.addEventListener('click', () => {
+      clearCart();
+      closeCart();
+    });
+  }
+
+  function updateCopyrightYear() {
+    const yearElements = document.querySelectorAll('.copyright-year');
+    const year = new Date().getFullYear();
+    yearElements.forEach(el => el.textContent = year);
+  }
+
+  updateCopyrightYear();
+
+  // Валидация формы заказа
+  const orderForm = document.getElementById('order-form');
+  const orderFeedback = document.getElementById('order-feedback');
+
+  orderForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = orderForm.name.value.trim();
+    const phone = orderForm.phone.value.trim();
+
+    if (!name || !phone) {
+      orderFeedback.textContent = 'Пожалуйста, заполните все поля.';
+      orderFeedback.className = 'order-feedback error';
+      return;
+    }
+
+    if (cart.length === 0) {
+        orderFeedback.textContent = 'Корзина пуста.';
+        orderFeedback.className = 'order-feedback error';
+        return;
+    }
+
+    // Имитация отправки
+    orderFeedback.textContent = 'Заказ успешно отправлен!';
+    orderFeedback.className = 'order-feedback success';
+    orderForm.reset();
+    cart = [];
+    saveAndRender();
+  });
+
+  function syncCart() {
+    cart = JSON.parse(localStorage.getItem('cart')) || [];
+  }
+
+  function updateCartBadge() {
+    syncCart();
+    const badge = document.getElementById('cart-count');
+    if (badge) {
+      badge.textContent = cart.length;
+    }
+  }
+
+  function saveAndRender() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartBadge();
+    renderCart();
+  }
+
+  function addToCart(product) {
+    const existing = cart.find(item => item.id === product.id);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      cart.push(product);
+    }
+    saveAndRender();
+  }
+
+  function removeFromCart(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    saveAndRender();
+  }
+
+  function clearCart() {
+    cart = [];
+    saveAndRender();
+  }
+
+  function changeQuantity(productId, delta) {
+    const item = cart.find(item => item.id === productId);
+    if (item) {
+      item.quantity = Math.max(1, item.quantity + delta);
+      saveAndRender();
+    }
+  }
+
+  function renderCart() {
+    syncCart();
+    cartItemsContainer.innerHTML = '';
+    let total = 0;
+
+    cart.forEach(item => {
+      const itemPrice = item.box_price > 0 ? item.box_price : (parseFloat(item.price) || 0);
+      total += itemPrice * item.quantity;
+      const div = document.createElement('div');
+      div.classList.add('cart-item');
+      div.innerHTML = `
+        <img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.name)}" class="cart-item-img">
+        <div class="cart-item-info">
+          <div class="cart-item-name">${escapeHtml(item.name)}</div>
+          <div class="cart-item-price">${itemPrice * item.quantity} ₽</div>
+          <div class="cart-item-vat">Цена с НДС</div>
+          <div class="cart-item-controls">
+            <button class="qty-btn" onclick="changeQty('${item.id}', -1)">-</button>
+            <span>${item.quantity} ${getPackLabel(item.quantity)}</span>
+            <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+            <button class="remove-btn" onclick="remove('${item.id}')">Удалить</button>
+          </div>
+        </div>
+      `;
+      cartItemsContainer.appendChild(div);
+    });
+
+    cartTotalPrice.textContent = `${total} ₽`;
+  }
+
+  // Делаем функции доступными глобально для onclick
+  window.changeQty = changeQuantity;
+  window.remove = removeFromCart;
+
+  // Обновляем бейдж при загрузке
+  document.addEventListener('DOMContentLoaded', updateCartBadge);
+
+  // Синхронизируем корзину при обновлении из других скриптов
+  document.addEventListener('cart-updated', updateCartBadge);
+
   function formatProductValue(value) {
     if (value === null || value === undefined) {
       return '';
@@ -18,6 +166,11 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;');
+  }
+
+  function getPackLabel(quantity) {
+    const q = Number(quantity) || 0;
+    return q === 1 ? 'упаковка' : q < 5 ? 'упаковки' : 'упаковок';
   }
 
   function getImageUrl(value) {
@@ -116,6 +269,11 @@
   }
 
   function createProductCard(product) {
+    // --- Получение данных для объекта ---
+    // Преобразуем productId в строку, чтобы избежать проблем с btoa
+    const rawId = product.id || product.Id || product['ID'] || (product.name + product.brand);
+    const productId = btoa(unescape(encodeURIComponent(rawId)));
+    
     const brand = formatProductValue(
       product.brand ||
       product.Brand ||
@@ -127,6 +285,13 @@
       product.name ||
       product.Name ||
       product['Название'] ||
+      ''
+    );
+    
+    const category = formatProductValue(
+      product.category ||
+      product.Category ||
+      product['Категория'] ||
       ''
     );
 
@@ -155,30 +320,7 @@
       product.PriceUnit ||
       product['Цена за штуку'] ||
       product.price ||
-      ''
-    );
-
-    const priceBox = formatProductValue(
-      product.price_box ||
-      product.PriceBox ||
-      product['Цена за коробку'] ||
-      product.box_price ||
-      ''
-    );
-
-    const stock = formatProductValue(
-      product.stock ||
-      product.Stock ||
-      product.status ||
-      product['Наличие'] ||
-      ''
-    );
-
-    const badge = formatProductValue(
-      product.badge ||
-      product.Badge ||
-      product['Бейдж'] ||
-      ''
+      '0'
     );
 
     const imageSource =
@@ -189,25 +331,20 @@
 
     const imageUrl = getImageUrl(imageSource);
 
-    // Показываем в консоли настоящий адрес,
-    // который браузер будет использовать.
-    console.log(
-      'Фото:',
-      name,
-      '→',
-      new URL(imageUrl, document.baseURI).href
+    const badge = formatProductValue(
+      product.badge ||
+      product.Badge ||
+      product['Бейдж'] ||
+      ''
     );
 
-    const badgeHtml =
-      badge !== ''
-        ? `
-          <span class="badge badge-${badge
-            .toLowerCase()
-            .replace(/\s+/g, '-')}">
-            ${escapeHtml(badge)}
-          </span>
-        `
-        : '';
+    const stock = formatProductValue(
+      product.stock ||
+      product.Stock ||
+      product.status ||
+      product['Наличие'] ||
+      ''
+    );
 
     const card = document.createElement('div');
 
@@ -251,32 +388,12 @@
 
         ${
           boxQty
-            ? `<p>${escapeHtml(boxQty)} шт. в коробке</p>`
+            ? `<p>${escapeHtml(boxQty)} шт. в упаковке</p>`
             : ''
         }
 
         <div class="prices">
-
-          ${
-            priceUnit
-              ? `
-                <p>
-                  ${escapeHtml(priceUnit)} / шт.
-                </p>
-              `
-              : ''
-          }
-
-          ${
-            priceBox
-              ? `
-                <p>
-                  ${escapeHtml(priceBox)} / коробка
-                </p>
-              `
-              : ''
-          }
-
+           <p>${escapeHtml(priceUnit)} / шт.</p>
         </div>
 
         <div class="availability">
@@ -285,28 +402,41 @@
             ${escapeHtml(stock)}
           </span>
 
-          ${badgeHtml}
-
         </div>
 
-        <button class="add-to-cart">
-          Добавить в заявку
+        <button class="add-to-cart btn-cart" data-id="${escapeHtml(productId)}">
+          <i class="fas fa-shopping-basket"></i> Добавить в корзину
         </button>
 
       </div>
     `;
 
+    // --- Обработчик кнопки ---
+    const btn = card.querySelector('.add-to-cart');
+    btn.addEventListener('click', () => {
+      const productObj = {
+        id: productId,
+        name: name,
+        category: category,
+        image: imageUrl,
+        price: parseFloat(priceUnit) || 0,
+        quantity: 1
+      };
+
+      addToCart(productObj);
+      
+      // UI изменения
+      btn.textContent = '✓ В корзине';
+      btn.classList.add('in-cart', 'added');
+      
+      // Сброс анимации
+      setTimeout(() => btn.classList.remove('added'), 300);
+    });
+
     const img = card.querySelector('.product-img');
 
     if (img) {
       img.addEventListener('error', () => {
-        console.error(
-          'ОШИБКА ЗАГРУЗКИ ФОТО:',
-          name,
-          '→',
-          img.src
-        );
-
         if (!img.dataset.fallback) {
           img.dataset.fallback = '1';
           img.src = 'assets/img/products/placeholder.svg';

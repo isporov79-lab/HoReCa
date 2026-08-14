@@ -80,8 +80,10 @@
 
     article.className = 'excel-product-card';
 
-
     const imageUrl = getImageUrl(product.image);
+
+    const rawId = product.id || product.name + product.brand;
+    const productId = btoa(unescape(encodeURIComponent(rawId)));
 
     article.innerHTML = `
       <div class="excel-product-image">
@@ -127,7 +129,7 @@
           product.package !== undefined
             ? `
               <div class="excel-product-meta">
-                В коробке: ${escapeHtml(product.package)} шт.
+                В упаковке: ${escapeHtml(product.package)} шт.
               </div>
             `
             : ''
@@ -156,7 +158,7 @@
             product.box_price !== undefined
               ? `
                 <div>
-                  <span>За коробку</span>
+                  <span>За упаковку</span>
                   <strong>${money(product.box_price)}</strong>
                 </div>
               `
@@ -177,7 +179,7 @@
 
   <span class="excel-product-qty-value">1</span>
 
-  <span class="excel-product-qty-label">коробка</span>
+  <span class="excel-product-qty-label">упаковка</span>
 
   <button
     type="button"
@@ -187,9 +189,14 @@
 </div>
 
 <button
-  class="excel-product-cart"
+  class="excel-product-cart btn-cart"
   type="button"
-  data-product-id="${escapeHtml(product.id || product.name)}"
+  data-product-id="${escapeHtml(productId)}"
+  data-product-name="${escapeHtml(product.name)}"
+  data-product-image="${escapeHtml(imageUrl)}"
+  data-product-price="${escapeHtml(product.price)}"
+  data-product-box-price="${escapeHtml(product.box_price)}"
+  data-product-category="${escapeHtml(product.category || '')}"
 >
   В корзину
 </button>
@@ -219,7 +226,7 @@
     return article;
   }
 
-  function renderProducts() {
+  function renderProducts(subcategory) {
     console.log('catalog.js: renderProducts запущен');
 
     const container =
@@ -250,12 +257,21 @@
 
     const filtered = products
       .filter(product => {
-        if (!category) {
-          return true;
+        if (category) {
+          if (normalize(product.category) !==
+            normalize(category)) {
+            return false;
+          }
         }
 
-        return normalize(product.category) ===
-          normalize(category);
+        if (subcategory) {
+          if (normalize(product.subcategory) !==
+            normalize(subcategory)) {
+            return false;
+          }
+        }
+
+        return true;
       })
       .sort((a, b) => {
         return number(a.sort) - number(b.sort);
@@ -263,8 +279,8 @@
 
     console.log(
       'catalog.js: товаров категории "' +
-      category +
-      '":',
+        category +
+        '":',
       filtered.length
     );
 
@@ -293,13 +309,31 @@
   if (document.readyState === 'loading') {
     document.addEventListener(
       'DOMContentLoaded',
-      renderProducts
+      () => renderProducts('')
     );
   } else {
-    renderProducts();
+    renderProducts('');
   }
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.subcategory-btn');
+
+    if (!btn) return;
+
+    const subcategory = btn.dataset.subcategory || '';
+
+    document.querySelectorAll('.subcategory-btn').forEach(b => {
+      b.classList.toggle('active', b === btn);
+    });
+
+    renderProducts(subcategory);
+  });
 // ---------- Корзина ----------
-const CART_KEY = 'horeca_cart';
+// ПРАВИЛО: все обработчики карточек товаров вешаются через делегирование
+// на document, а не на отдельные кнопки. Поэтому товары, добавленные
+// в DOM позже (рендер, фильтры, пагинация), автоматически работают
+// с корзиной без повторной привязки событий.
+const CART_KEY = 'cart';
 
 function getCart() {
   return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
@@ -309,7 +343,7 @@ function saveCart(cart) {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
 }
 
-// Изменение количества коробок
+// Изменение количества упаковок
 document.addEventListener('click', (e) => {
   const minus = e.target.closest('.excel-product-qty-minus');
   const plus = e.target.closest('.excel-product-qty-plus');
@@ -338,9 +372,9 @@ document.addEventListener('click', (e) => {
 
     if (label) {
       label.textContent =
-        quantity === 1 ? 'коробка' :
-        quantity < 5 ? 'коробки' :
-        'коробок';
+        quantity === 1 ? 'упаковка' :
+        quantity < 5 ? 'упаковки' :
+        'упаковок';
     }
 
     return;
@@ -372,6 +406,11 @@ document.addEventListener('click', (e) => {
   } else {
     cart.push({
       id: id,
+      name: btn.dataset.productName,
+      image: btn.dataset.productImage,
+      price: parseFloat(btn.dataset.productPrice) || 0,
+      box_price: parseFloat(btn.dataset.productBoxPrice) || 0,
+      category: btn.dataset.productCategory,
       quantity: quantity
     });
   }
@@ -380,6 +419,8 @@ document.addEventListener('click', (e) => {
 
   btn.classList.add('in-cart');
   btn.textContent = '✓ В корзине';
+
+  document.dispatchEvent(new Event('cart-updated'));
 });
 
 // При загрузке страницы отмечаем уже добавленные товары
@@ -387,7 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cart = getCart();
 
   document.querySelectorAll('.excel-product-cart').forEach(btn => {
-    if (cart.includes(btn.dataset.productId)) {
+    if (cart.find(item => item.id === btn.dataset.productId)) {
       btn.classList.add('in-cart');
       btn.textContent = '✓ В корзине';
     }

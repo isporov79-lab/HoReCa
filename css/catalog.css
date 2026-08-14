@@ -1,6 +1,37 @@
 
 .excel-products-section { padding: 72px 0; }
 .excel-products-section .section-subtitle { margin-bottom: 36px; }
+
+.subcategory-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.subcategory-btn {
+  padding: 10px 24px;
+  border: 1px solid #d0d5dd;
+  border-radius: 10px;
+  background: #fff;
+  color: #333;
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.subcategory-btn:hover {
+  border-color: #3E424B;
+  background: #f5f7fa;
+}
+
+.subcategory-btn.active {
+  background: #3E424B;
+  color: #fff;
+  border-color: #3E424B;
+}
 .excel-products-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -16,6 +47,11 @@
   height: 500px;
   display: flex;
   flex-direction: column;
+}
+
+.excel-product-body {
+  padding-left: 5px;
+  padding-right: 8px;
 }
 
 .excel-product-card:hover {
@@ -126,30 +162,74 @@
   .excel-product-image { height: 220px; }
 }
 .excel-product-cart {
-  width: 100%;
-  margin-top: 12px;
-  padding: 12px 16px;
+  background-color: #3E424B;
   border: none;
-  border-radius: 10px;
-  background: #2a2f38;
-  color: #fff;
-  font-family: 'Manrope', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
   cursor: pointer;
-  transition: .2s;
+  transition: background-color 0.15s, transform 0.1s;
+  width: 100%;
+  border-radius: 10px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  margin-top: 12px;
 }
 
 .excel-product-cart:hover {
-  background: #00db99;
-  color: #121212;
+  background: #1f232b;
+  color: #ffffff;
+}
+
+.excel-product-cart:active {
+  background: #1f232b;
+  transform: translateY(2px);
 }
 
 .excel-product-cart.in-cart {
-  background: #00db99;
-  color: #121212;
+  background: #1f232b;
+  color: #ffffff;
 }
-/* Количество коробок */
+
+.btn-cart {
+  background-color: #3E424B;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.1s;
+  width: 100%;
+  border-radius: 10px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  margin-top: 12px;
+}
+
+.btn-cart:hover {
+  background: #1f232b;
+  color: #ffffff;
+}
+
+.btn-cart:active {
+  background: #1f232b;
+  transform: translateY(2px);
+}
+
+.btn-cart.in-cart {
+  background: #1f232b;
+  color: #ffffff;
+}
+
+/* Количество упаковок */
 .excel-product-quantity {
   display: flex !important;
   align-items: center !important;

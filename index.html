@@ -137,7 +137,14 @@
 
       <div class="header-actions">
         <a href="tel:+74950000000" class="header-phone"><i class="fas fa-phone"></i> +7 (495) 000-00-00</a>
-        <a href="#form" class="btn btn-primary btn-sm">Получить прайс</a>
+
+        <!-- Кнопка корзины -->
+        <button class="header-cart" id="cart-button" aria-label="Открыть корзину">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-text">Корзина</span>
+          <span class="cart-badge" id="cart-count">0</span>
+        </button>
+
         <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -239,9 +246,6 @@
         </div>
       </div>
 
-      <div class="advantages-cta">
-        <a href="#form" class="btn btn-primary">Получить прайс-лист</a>
-      </div>
     </div>
   </section>
 
@@ -880,11 +884,41 @@
       </div>
 
       <div class="footer-bottom">
-        <p>© 2024 HoReCaDrinks. Все права защищены.</p>
+        <p>© <span class="copyright-year"></span> HoReCaDrinks. Все права защищены.</p>
         <p class="footer-legal">ИНН 0000000000 · ОГРН 0000000000000 · Условия возврата и сроки годности — по запросу</p>
       </div>
     </div>
   </footer>
+
+  <!-- Боковая корзина -->
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <div class="cart-panel">
+      <div class="cart-header">
+        <h2>Ваша корзина</h2>
+        <button class="cart-close" id="cart-close">&times;</button>
+      </div>
+      <button class="cart-clear" id="cart-clear">Очистить корзину</button>
+      <div class="cart-items" id="cart-items">
+        <!-- Сюда будут динамически добавляться товары -->
+      </div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Итого:</span>
+          <span class="cart-total-right">
+            <span id="cart-total-price">0 ₽</span>
+            <span class="cart-total-vat">Цена с НДС</span>
+          </span>
+        </div>
+        <form id="order-form" class="order-form">
+          <input type="text" name="name" placeholder="Ваше имя" required>
+          <input type="tel" name="phone" placeholder="Телефон" required>
+          <button type="submit" class="btn btn-primary btn-block">Отправить заказ</button>
+          <div id="order-feedback" class="order-feedback"></div>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <!-- JS -->
   <script src="js/main.js" defer></script>

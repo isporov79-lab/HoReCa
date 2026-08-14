@@ -28,8 +28,14 @@
         <a href="index.html#contacts">Контакты</a>
       </nav>
       <div class="header-actions">
-        <a href="tel:+74950000000" class="header-phone">+7 (495) 000-00-00</a>
-        <a href="index.html#form" class="btn btn-primary btn-sm">Получить прайс</a>
+        <a href="tel:+74950000000" class="header-phone"><i class="fas fa-phone"></i> +7 (495) 000-00-00</a>
+
+        <!-- Кнопка корзины -->
+        <button class="header-cart" id="cart-button" aria-label="Открыть корзину">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-text">Корзина</span>
+          <span class="cart-badge" id="cart-count">0</span>
+        </button>
       </div>
     </div>
   </header>
@@ -39,20 +45,56 @@
       <div class="container">
         <h1 class="section-title">Вода</h1>
         <p class="section-subtitle">Негазированная и газированная вода для HoReCa.</p>
+        <div class="subcategory-filters">
+          <button class="subcategory-btn active" data-subcategory="">Все</button>
+          <button class="subcategory-btn" data-subcategory="С газом">С газом</button>
+          <button class="subcategory-btn" data-subcategory="Без газа">Без газа</button>
+          <button class="subcategory-btn" data-subcategory="Со вкусом">Со вкусом</button>
+        </div>
         <div class="excel-products-grid" data-excel-products data-excel-category="Вода"></div>
       </div>
     </section>
   </main>
+  
+  <!-- Боковая корзина -->
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <div class="cart-panel">
+      <div class="cart-header">
+        <h2>Ваша корзина</h2>
+        <button class="cart-close" id="cart-close">&times;</button>
+      </div>
+      <button class="cart-clear" id="cart-clear">Очистить корзину</button>
+      <div class="cart-items" id="cart-items">
+      </div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Итого:</span>
+          <span class="cart-total-right">
+            <span id="cart-total-price">0 ₽</span>
+            <span class="cart-total-vat">Цена с НДС</span>
+          </span>
+        </div>
+        <form id="order-form" class="order-form">
+          <input type="text" name="name" placeholder="Ваше имя" required>
+          <input type="tel" name="phone" placeholder="Телефон" required>
+          <button type="submit" class="btn btn-primary btn-block">Отправить заказ</button>
+          <div id="order-feedback" class="order-feedback"></div>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <footer class="footer" id="contacts">
     <div class="container">
       <div class="footer-bottom">
-        <p>© 2024 HoReCaDrinks. Все права защищены.</p>
+        <p>© <span class="copyright-year"></span> HoReCaDrinks. Все права защищены.</p>
         <p><a href="index.html">Вернуться на главную</a></p>
       </div>
     </div>
   </footer>
 
+  <script src="js/main.js" defer></script>
   <script src="js/catalog-data.js"></script>
   <script src="js/catalog.js"></script>
 </body>
